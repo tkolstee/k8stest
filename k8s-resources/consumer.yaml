@@ -1,0 +1,35 @@
+---   # Rabbit consumer app deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rabbit-consumer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rabbit-consumer
+  template:
+    metadata:
+      labels:
+        app: rabbit-consumer
+    spec:
+      containers:
+        - name: rabbit-consumer
+          image: tkolstee/sample-rabbit-consumer:latest
+          tty: true
+          resources:
+            limits:
+              memory: "4096Mi"
+              cpu: "750m"
+            requests:
+              memory: "4096Mi"
+              cpu: "750m"
+          env:
+            - name: MQ_SERVER
+              value: "rabbitmq"
+            - name: MQ_USER
+              value: "guest"
+            - name: MQ_PASS
+              value: "guest"
+      imagePullSecrets:
+        - name: regcred

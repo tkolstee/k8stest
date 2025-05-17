@@ -1,0 +1,40 @@
+---
+# --- RabbitMQ deployment ---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rabbitmq
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rabbitmq
+  template:
+    metadata:
+      labels:
+        app: rabbitmq
+    spec:
+      containers:
+        - name: rabbitmq
+          image: rabbitmq:latest
+          resources:
+            limits:
+              memory: "4096Mi"
+              cpu: "750m"
+            requests:
+              memory: "4096Mi"
+              cpu: "750m"
+          ports:
+            - containerPort: 5672
+---
+# --- RabbitMQ service ---
+apiVersion: v1
+kind: Service
+metadata:
+  name: rabbitmq
+spec:
+  selector:
+    app: rabbitmq
+  ports:
+    - port: 5672          # Service port
+      targetPort: 5672    # Container port
