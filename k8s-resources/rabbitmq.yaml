@@ -18,12 +18,9 @@ spec:
         - name: rabbitmq
           image: rabbitmq:latest
           resources:
-            limits:
-              memory: "4096Mi"
-              cpu: "750m"
             requests:
-              memory: "4096Mi"
-              cpu: "750m"
+              memory: "64Mi"
+              cpu: "100m"
           ports:
             - containerPort: 5672
 ---

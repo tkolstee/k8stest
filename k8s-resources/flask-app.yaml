@@ -15,15 +15,12 @@ spec:
     spec:
       containers:
         - name: flask-app
-          image: tkolstee/sample-flask-app:latest
-          tty: true
+          image: docker.io/tkolstee/sample-flask-app
           resources:
-            limits:
-              memory: "4096Mi"
-              cpu: "750m"
             requests:
-              memory: "4096Mi"
-              cpu: "750m"
+              memory: "64Mi"
+              cpu: "100m"
+          tty: true
           ports:
             - containerPort: 8000
           env:
@@ -31,8 +28,6 @@ spec:
               value: "redis"
             - name: REDIS_PORT
               value: "6379"
-      imagePullSecrets:
-        - name: regcred
 ---  # Flask app service
 apiVersion: v1
 kind: Service

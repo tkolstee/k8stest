@@ -15,15 +15,11 @@ spec:
     spec:
       containers:
         - name: rabbit-producer
-          image: tkolstee/sample-rabbit-producer:latest
-          tty: true
-          resources:
-            limits:
-              memory: "4096Mi"
-              cpu: "750m"
+          image: docker.io/tkolstee/sample-rabbit-producer
             requests:
-              memory: "4096Mi"
-              cpu: "750m"
+              memory: "64Mi"
+              cpu: "100m"
+          tty: true
           env:
             - name: MQ_SERVER
               value: "rabbitmq"
@@ -31,5 +27,3 @@ spec:
               value: "guest"
             - name: MQ_PASS
               value: "guest"
-      imagePullSecrets:
-        - name: regcred
