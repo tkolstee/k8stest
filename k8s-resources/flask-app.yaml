@@ -16,6 +16,7 @@ spec:
       containers:
         - name: flask-app
           image: docker.io/tkolstee/sample-flask-app
+          imagePullPolicy: Always
           resources:
             requests:
               memory: "64Mi"
@@ -31,6 +32,12 @@ spec:
               value: "redis"
             - name: REDIS_PORT
               value: "6379"
+            - name: MQ_SERVER
+              value: "rabbitmq"
+            - name: MQ_USER
+              value: "guest"
+            - name: MQ_PASS
+              value: "guest"
 ---  # Flask app service
 apiVersion: v1
 kind: Service
