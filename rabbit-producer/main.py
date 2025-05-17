@@ -23,4 +23,5 @@ for _ in range(5):
 	channel.basic_publish(exchange='', routing_key='hello', body=hostname)
 	print(f" [x] Sent '{hostname}'")
 	time.sleep(5)
-connection.close()
+
+

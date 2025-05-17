@@ -4,7 +4,7 @@ kind: Deployment
 metadata:
   name: rabbit-producer
 spec:
-  replicas: 1
+  replicas: 5
   selector:
     matchLabels:
       app: rabbit-producer
@@ -16,9 +16,13 @@ spec:
       containers:
         - name: rabbit-producer
           image: docker.io/tkolstee/sample-rabbit-producer
+          resources:
             requests:
               memory: "64Mi"
               cpu: "100m"
+            limits:
+              memory: "128Mi"
+              cpu: "200m"
           tty: true
           env:
             - name: MQ_SERVER
