@@ -16,6 +16,13 @@ spec:
       containers:
         - name: redis
           image: redis:7
+          resources:
+            limits:
+              memory: "4096Mi"
+              cpu: "750m"
+            requests:
+              memory: "4096Mi"
+              cpu: "750m"
           ports:
             - containerPort: 6379
 ---
@@ -49,6 +56,13 @@ spec:
       containers:
         - name: rabbitmq
           image: rabbitmq:latest
+          resources:
+            limits:
+              memory: "4096Mi"
+              cpu: "750m"
+            requests:
+              memory: "4096Mi"
+              cpu: "750m"
           ports:
             - containerPort: 5672
 ---
@@ -82,6 +96,14 @@ spec:
       containers:
         - name: flask-app
           image: tkolstee/sample-flask-app:latest
+          tty: true
+          resources:
+            limits:
+              memory: "4096Mi"
+              cpu: "750m"
+            requests:
+              memory: "4096Mi"
+              cpu: "750m"
           ports:
             - containerPort: 8000
           env:
@@ -123,6 +145,14 @@ spec:
       containers:
         - name: rabbit-consumer
           image: tkolstee/sample-rabbit-consumer:latest
+          tty: true
+          resources:
+            limits:
+              memory: "4096Mi"
+              cpu: "750m"
+            requests:
+              memory: "4096Mi"
+              cpu: "750m"
           env:
             - name: MQ_SERVER
               value: "rabbitmq"
@@ -151,6 +181,14 @@ spec:
       containers:
         - name: rabbit-producer
           image: tkolstee/sample-rabbit-producer:latest
+          tty: true
+          resources:
+            limits:
+              memory: "4096Mi"
+              cpu: "750m"
+            requests:
+              memory: "4096Mi"
+              cpu: "750m"
           env:
             - name: MQ_SERVER
               value: "rabbitmq"
