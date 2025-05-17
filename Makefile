@@ -1,5 +1,5 @@
-DOCKER_BUILDS=flask-app rabbit-consumer rabbit-producer
-K8S_DEPLOYMENTS=consumer flask-app producer rabbitmq redis
+DOCKER_BUILDS=flask-app rabbit-consumer
+K8S_DEPLOYMENTS=consumer flask-app rabbitmq redis
 
 build:
 	for x in ${DOCKER_BUILDS}; do docker build -t docker.io/tkolstee/sample-$${x} $${x}; done
