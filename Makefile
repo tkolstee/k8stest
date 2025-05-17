@@ -1,11 +1,10 @@
-DOCKER_BUILDS=flask-app rabbit-consumer
-K8S_DEPLOYMENTS=consumer flask-app rabbitmq redis
+SUBDIRS=flask-app rabbit-consumer redis rabbitmq
 
 build:
-	for x in ${DOCKER_BUILDS}; do docker build -t docker.io/tkolstee/sample-$${x} $${x}; done
+	for x in ${SUBDIRS}; do cd ${x}; make build; cd -; done
 
 push: build
-	for x in ${DOCKER_BUILDS}; do docker push docker.io/tkolstee/sample-$${x}; done
+	for x in ${SUBDIRS}; do cd ${x}; make push; cd -; done
 
 deploy:
-	for x in ${K8S_DEPLOYMENTS}; do kubectl apply -f k8s-resources/$${x}.yaml; done
+	for x in ${SUBDIRS}; do cd ${x}; make deploy; cd -; done
