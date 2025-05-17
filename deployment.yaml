@@ -31,6 +31,39 @@ spec:
     - port: 6379          # Service port
       targetPort: 6379    # Container port
 ---
+# --- RabbitMQ deployment ---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rabbitmq
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rabbitmq
+  template:
+    metadata:
+      labels:
+        app: rabbitmq
+    spec:
+      containers:
+        - name: rabbitmq
+          image: rabbitmq:latest
+          ports:
+            - containerPort: 5672
+---
+# --- RabbitMQ service ---
+apiVersion: v1
+kind: Service
+metadata:
+  name: rabbitmq
+spec:
+  selector:
+    app: rabbitmq
+  ports:
+    - port: 5672          # Service port
+      targetPort: 5672    # Container port
+---
 # --- Flask app deployment --
 apiVersion: apps/v1
 kind: Deployment
@@ -71,3 +104,59 @@ spec:
     - port: 8000          # Service port
       targetPort: 8000    # Container port
       nodePort: 30080     # Node port (must be between 30000-32767)
+---
+# --- Rabbit consumer app deployment --
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rabbit-consumer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rabbit-consumer
+  template:
+    metadata:
+      labels:
+        app: rabbit-consumer
+    spec:
+      containers:
+        - name: rabbit-consumer
+          image: tkolstee/sample-rabbit-consumer:latest
+          env:
+            - name: MQ_SERVER
+              value: "rabbitmq"
+            - name: MQ_USER
+              value: "guest"
+            - name: MQ_PASS
+              value: "guest"
+      imagePullSecrets:
+        - name: regcred
+---
+# --- Rabbit producer app deployment --
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rabbit-producer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rabbit-producer
+  template:
+    metadata:
+      labels:
+        app: rabbit-producer
+    spec:
+      containers:
+        - name: rabbit-producer
+          image: tkolstee/sample-rabbit-producer:latest
+          env:
+            - name: MQ_SERVER
+              value: "rabbitmq"
+            - name: MQ_USER
+              value: "guest"
+            - name: MQ_PASS
+              value: "guest"
+      imagePullSecrets:
+        - name: regcred
